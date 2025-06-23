@@ -42,7 +42,7 @@
 <body>
     <div id="el">
         <Modal v-model="modal1" title="自定义答题" class-name="vertical-center-modal" @on-ok="ok" @on-cancel="cancel">
-            <i-form ref="formInline" :model="formInline" inline :label-width="80">
+            <i-form ref="formInline" :model="formInline" inline :label-width="70">
                 <form-item prop="timushuliang" label="题目数量">
                     <Input-number v-model="formInline.timushuliang"></Input-number>
                 </form-item>
@@ -51,6 +51,9 @@
                         <span slot="open">On</span>
                         <span slot="close">Off</span>
                     </i-switch>
+                </Form-item>
+                <Form-item label="考试时间（分）">
+                    <Input-number v-model="formInline.shijian"></Input-number>
                 </Form-item>
 
             </i-form>
@@ -75,7 +78,8 @@
                 value5: '',
                 formInline: {
                     timushuliang: 100,
-                    luanxu: false
+                    luanxu: false,
+                    shijian: 100
                 },
 
                 typeList: [{
@@ -113,6 +117,7 @@
                         if (valid) {
                             localStorage.timushuliang = this.formInline.timushuliang
                             localStorage.luanxu = this.formInline.luanxu
+                            localStorage.shijian = this.formInline.shijian
                             window.location.href = "./timu_new.html"
 
                             // this.$Message.success('提交成功!');
