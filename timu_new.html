@@ -20,37 +20,7 @@
         })();
     </script>
     <style>
-        .layout {
-            border: 1px solid #d7dde4;
-            background: #f5f7f9;
-            position: relative;
-            border-radius: 4px;
-            overflow: hidden;
-        }
-
-        .layout-logo {
-            width: 100px;
-            height: 30px;
-            background: #5b6270;
-            border-radius: 3px;
-            float: left;
-            position: relative;
-            top: 15px;
-            left: 20px;
-        }
-
-        .layout-nav {
-            width: 420px;
-            margin: 0 auto;
-            margin-right: 20px;
-        }
-
-        .layout-footer-center {
-            /* position: absolute; */
-            width: 100%;
-            bottom: 100px;
-        }
-
+        
         .question-navigation {
             display: flex;
             flex-wrap: wrap;
@@ -90,13 +60,6 @@
             /*未答灰色*/
         }
 
-
-
-
-
-        body {
-            line-height: 1.4rem;
-        }
 
         .process {
             width: 93.6vw;
@@ -184,96 +147,85 @@
             display: block;
             margin-top: 20px;
         }
+        .demo-split{
+        height: 10em;
+        width: auto;
+        /* text-align: center; */
+        
+        border: 0px solid #dcdee2;
+    }
+    .demo-split-pane{
+        padding: 10px;
+        
 
-        .ivu-card-head p {
-            overflow: inherit;
-            white-space: inherit;
-            line-height: 24px;
-        }
+    }
 
-        .ivu-message-notice-content-text {
-            display: block !important;
-        }
+        
     </style>
 </head>
 
 <body>
     <div id="el">
-        <Layout>
-            <Header>
-                <Row style="margin-bottom: 8px;margin-top: 8px;">
+        <div class="demo-split">
+             <Split v-model="split2" mode="vertical">
+            <div slot="top" class="demo-split-pane">
+                <Row>
                     <i-col span="6" offset="1">考生编号:{{userId}} </i-col>
                     <i-col span="6" offset="11"><i-button type="primary">交卷</i-button></i-col>
                 </Row>
-
-            </Header>
-            <Layout>
-                <Sider hide-trigger :style="{background: '#fff'}">
-                    <h1>题目导航：</h1>
-                    一、单选题
-                    <div class="question-navigation">
-                        <div v-for="(question, index) in danxuanti" :key="question.id" class="nav-item" :class="{
-                            'current': typeCurrentIndex[0].currentIndex === index&&currentActiveType===0,
-                            'answered': answerStatus[question.id] === 'correct',
-                            'wrong': answerStatus[question.id] === 'wrong',
-                            'unanswered': !answerStatus[question.id]
-                          }" @click="switchQuestion(index,0)">
-                            {{ index + 1 }}
-                        </div>
+            </div>
+            <div slot="bottom" class="demo-split">
+                <Split v-model="split1" style="height: auto;">
+                    <div slot="left" class="demo-split-pane">
+                            <div style="background:#eee;padding: 10px">
+                                <Card :bordered="false">
+                                    <p slot="title"> 一、单选题</p>
+                                    <div class="question-navigation">
+                                        <div v-for="(question, index) in danxuanti" :key="question.id" class="nav-item" :class="{
+                                            'current': typeCurrentIndex[0].currentIndex === index&&currentActiveType===0,
+                                            'answered': answerStatus[question.id] === 'correct',
+                                            'wrong': answerStatus[question.id] === 'wrong',
+                                            'unanswered': !answerStatus[question.id]
+                                          }" @click="switchQuestion(index,0)">
+                                            {{ index + 1 }}
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+                            <div style="background:#eee;padding: 10px">
+                                <Card :bordered="false">
+                                    <p slot="title"> 二、多选题</p>
+                                    <div class="question-navigation">
+                                        <div v-for="(question, index) in duoxuanti" :key="question.id" class="nav-item" :class="{
+                                            'current': typeCurrentIndex[1].currentIndex === index&&currentActiveType===1,
+                                            'answered': answerStatus[question.id] === 'correct',
+                                            'wrong': answerStatus[question.id] === 'wrong',
+                                            'unanswered': !answerStatus[question.id]
+                                          }" @click="switchQuestion(index,1)">
+                                            {{ index + 1 }}
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>
+                           
+                            
+                            <div style="background:#eee;padding: 10px">
+                                <Card :bordered="false">
+                                    <p slot="title"> 三、判断题</p>
+                                    <div class="question-navigation">
+                                        <div v-for="(question, index) in panduanti" :key="question.id" class="nav-item" :class="{
+                                            'current': typeCurrentIndex[2].currentIndex === index&&currentActiveType===2,
+                                            'answered': answerStatus[question.id] === 'correct',
+                                            'wrong': answerStatus[question.id] === 'wrong',
+                                            'unanswered': !answerStatus[question.id]
+                                          }" @click="switchQuestion(index,2)">
+                                            {{ index + 1 }}
+                                        </div>
+                                    </div>
+                                </Card>
+                            </div>  
                     </div>
-                    <h1>二、多选题</h1>
-                    <div class="question-navigation">
-                        <div v-for="(question, index) in duoxuanti" :key="question.id" class="nav-item" :class="{
-                            'current': typeCurrentIndex[1].currentIndex === index&&currentActiveType===1,
-                            'answered': answerStatus[question.id] === 'correct',
-                            'wrong': answerStatus[question.id] === 'wrong',
-                            'unanswered': !answerStatus[question.id]
-                          }" @click="switchQuestion(index,1)">
-                            {{ index + 1 }}
-                        </div>
-                    </div>
-                    <h1>三、判断题</h1>
-                    <div class="question-navigation">
-                        <div v-for="(question, index) in panduanti" :key="question.id" class="nav-item" :class="{
-                            'current': typeCurrentIndex[2].currentIndex === index&&currentActiveType===2,
-                            'answered': answerStatus[question.id] === 'correct',
-                            'wrong': answerStatus[question.id] === 'wrong',
-                            'unanswered': !answerStatus[question.id]
-                          }" @click="switchQuestion(index,2)">
-                            {{ index + 1 }}
-                        </div>
-                    </div>
-
-                    <!-- <Menu active-name="1-2" theme="light" width="auto" :open-names="['1']">
-                        <Submenu name="1">
-                            <template slot="title">
-                                <Icon type="ios-navigate"></Icon>
-                                Item 1
-                            </template>
-                            <MenuItem name="1-1">Option 1</MenuItem>
-                            <MenuItem name="1-2">Option 2</MenuItem>
-                            <MenuItem name="1-3">Option 3</MenuItem>
-                        </Submenu>
-                        <Submenu name="2">
-                            <template slot="title">
-                                <Icon type="ios-keypad"></Icon>
-                                Item 2
-                            </template>
-                            <MenuItem name="2-1">Option 1</MenuItem>
-                            <MenuItem name="2-2">Option 2</MenuItem>
-                        </Submenu>
-                        <Submenu name="3">
-                            <template slot="title">
-                                <Icon type="ios-analytics"></Icon>
-                                Item 3
-                            </template>
-                            <MenuItem name="3-1">Option 1</MenuItem>
-                            <MenuItem name="3-2">Option 2</MenuItem>
-                        </Submenu>
-                    </Menu> -->
-                </Sider>
-                <Layout :style="{padding: '0 24px 24px'}">
-                    <div class="question-container">
+                    <div slot="right" class="demo-split-pane">
                         <Layout>
                             <!-- <Header>Header</Header> -->
                             <Content :style="{padding: '0 50px'}"> <!-- 这里显示当前题目内容 -->
@@ -331,54 +283,12 @@
                                     </Row>
                             </Footer>
                         </Layout>
-
-
                     </div>
-
-
-                    <!-- <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-                        <p class='process'>第{{page+1}}题，共{{data.length}}题</p>
-                        <Card class='timu'>
-                            <p slot="title">
-                                <label class='type'
-                                    v-if="timu.option">{{timu.option.length?(timu.answer.length===1?'单选':'多选'):(timu.answer.length>16?'简答':'填空')}}</label>{{timu.title}}
-                            </p>
-                            <a href="#" slot="extra" @click.prevent="changeLimit">
-                                <Icon type="ios-loop-strong"></Icon>
-                                Change
-                            </a>
-                            <div class="option">
-                                <div v-for="(i,k) in timu.option" v-key='k' @click='select(k)' :class='daan.indexOf(k)!=-1?"active":""'>
-                                    {{zidian[k]}}.{{i}}</div>
-                            </div>
-                            <div type="success" v-if='answer&&result===1' class='result success'>恭喜回答正确</div>
-                            <div type="warning" v-if='answer&&result===0' class='result warning'>抱歉回答错误了哦！</div>
-                            <div v-if='answer&&result===2' class='result info'>{{(String(timu.answer).length>16?'简答':'填空')}}题暂不支持回答
-                            </div>
-                            <div v-if='answer' class="answer">答案：{{timu.answer}}</div>
-                            <div v-if='answer' class="analysis">解析：{{timu.analysis?timu.analysis:'该答案暂无解析'}}</div>
-                        </Card>
-                        <i-button class="huida" type="primary" :disabled='daan.length===0' @click='huida' size="large" long>确定答案
-                        </i-button>
-                        <i-button class="huida" type="success" v-if='sessionStorage.type == "wrong"' @click='del' size="large" long>
-                            我已学会，不再显示
-                        </i-button>
-                        <ButtonGroup class="pageControl">
-                            <i-button type="primary" @click="prev">
-                                上一题
-                            </i-button>
-                            <i-button type="primary" @click="next">
-                                下一题
-                            </i-button>
-                        </ButtonGroup>
-                    </Content> -->
-                </Layout>
-            </Layout>
-        </Layout>
-
-
-
-
+                </Split>
+            </div>
+        </Split>
+        </div>
+       
     </div>
     <script src="./js/public.js?version=1.0"></script>
     <script src="./js/vue.min.js"></script>
@@ -391,7 +301,9 @@
         const vue = new Vue({
             el: "#el",
             data: {
-                userId: "",
+                split1: 0.3,
+                split2: 0.5,
+                userId: Date.now(),
                 fileName: '',
                 fileId: '',
                 data: [],
@@ -407,7 +319,9 @@
                 typeCurrentIndex: [{ currentIndex: 0 }, { currentIndex: 0 }, { currentIndex: 0 }],
                 currentActiveType: 0,
                 currentIndex: 0, // 当前显示的题目索引
-                answerStatus: {} // 记录答题状态，如：{1: 'correct', 2: 'wrong', 3: ''}
+                answerStatus: {}, // 记录答题状态，如：{1: 'correct', 2: 'wrong', 3: ''},
+                timushuliang:0,
+                luanxu:false
             },
 
             methods: {
@@ -594,13 +508,18 @@
             created() {
                 this.fileName = sessionStorage.file
                 this.fileId = sessionStorage.id
+                this.timushuliang=localStorage.timushuliang
+                this.luanxu=localStorage.luanxu
+
                 if (!this.fileName) {
                     window.location.href = "./index.html"
                 }
                 axios.get('./json/' + this.fileName)
                     .then((response) => {
                         this.data = response.data;
-                        debugger;
+                        if(this.data.length>this.timushuliang){
+                            this.data = this.randomArray(this.data).slice(0,this.timushuliang);
+                        }
                         this.panduanti = this.data.filter(f => f.answer.length == 1 && f.option.length == 2);
                         this.danxuanti = this.data.filter(f => f.answer.length == 1 && f.option.length > 2);
                         this.duoxuanti = this.data.filter(f => f.answer.length > 1 && f.option.length > 2);
